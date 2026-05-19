@@ -9,11 +9,11 @@ def Date2Stamp(dateIn):
         return timestamp
     
 def dateFromAfas(AfasDate, astimestamp = False):
-    if AfasDate == None:
+    if AfasDate == None or AfasDate == '':
         if astimestamp:
             return 0
         else:
-            return ''
+            return None
     T = 'T' if 'T' in AfasDate else ' '
     if 'Z' in AfasDate:
         dt = datetime.datetime.strptime(AfasDate, f"%Y-%m-%d{T}%H:%M:%SZ")
@@ -25,5 +25,9 @@ def dateFromAfas(AfasDate, astimestamp = False):
             dt = datetime.datetime.strptime(AfasDate, f"%Y-%m-%d{T}%H:%M")
         elif len(temp) == 1:
             dt = datetime.datetime.strptime(AfasDate, "%Y-%m-%d")
-    if astimestamp: dt = dt.timestamp()
+    if astimestamp:
+        if AfasDate == None:
+            dt = 0
+        else: 
+            dt = dt.timestamp()
     return dt
